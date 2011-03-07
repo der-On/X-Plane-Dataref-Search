@@ -15,6 +15,8 @@ function parse()
 {
 	global $version;
 	global $time;
+	global $types;
+	global $units;
 	$t_start = microtime(true);
 	$txt = file_get_contents('DataRefs.txt');
 	$lines = explode("\n",$txt);
@@ -23,6 +25,8 @@ function parse()
 	for($i=1; $i<count($lines);$i++) {
 		parseLine($lines[$i]);
 	}
+	sort($types,SORT_STRING);
+	sort($units,SORT_STRING);
 	$time = round((microtime(true)-$t_start)*1000)/1000;
 }
 function parseLine($line)
