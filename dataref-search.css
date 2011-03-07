@@ -36,6 +36,8 @@ td.name a:hover {
 	padding:1em 0;
 	border-bottom:1px solid #000;
 	-moz-box-shadow:0px 4px 4px #CCC;
+	-webkit-box-shadow:0px 4px 4px #CCC;
+	box-shadow:0px 4px 4px #CCC;
 	background:#DDD;
 	width:100%;
 }
@@ -50,10 +52,14 @@ input,select,button,#messages {
 	color:#666;
 	background:#FFF;
 	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
 	border:1px solid #999;
 }
 input[type=submit],button {
 	background: -moz-linear-gradient(top, #BBB, #444, #666);
+	background: -webkit-linear-gradient(top, #BBB, #444, #666);
+	background: linear-gradient(top, #BBB, #444, #666);
 	color:#FFF;
 	font-size:85%;
 	font-weight:bold;
