@@ -75,18 +75,18 @@ function fillTable()
 }
 function checkMatch(&$dataref)
 {
-	$name = trim($_GET['name']);
+	$name = strtolower(trim($_GET['name']));
 	$type = $_GET['type'];
 	$writable = $_GET['writable'];
 	$units = $_GET['units'];
-	$description = trim($_GET['description']);
+	$description = strtolower(trim($_GET['description']));
 	$match = true;
 
-	if (!empty($name) && strpos($dataref['name'],$name)===false) $match = false;
+	if (!empty($name) && strpos(strtolower($dataref['name']),$name)===false) $match = false;
 	if (!empty($type) && $dataref['type']!=$type) $match = false;
 	if (!empty($writable) && $dataref['writable']!=$writable) $match = false;
 	if (!empty($units) && $dataref['units']!=$units) $match = false;
-	if (!empty($description) && strpos($dataref['description'],$description)===false) $match = false;
+	if (!empty($description) && strpos(strtolower($dataref['description']),$description)===false) $match = false;
 	return $match;
 }
 ?>
