@@ -75,11 +75,11 @@ function fillTable()
 }
 function checkMatch(&$dataref)
 {
-	$name = strtolower(trim($_GET['name']));
-	$type = $_GET['type'];
-	$writable = $_GET['writable'];
-	$units = $_GET['units'];
-	$description = strtolower(trim($_GET['description']));
+	$name = (isset($_GET['name']))?strtolower(trim($_GET['name'])):NULL;
+	$type = (isset($_GET['type']))?$_GET['type']:NULL;
+	$writable = (isset($_GET['writable']))?$_GET['writable']:NULL;
+	$units = (isset($_GET['units']))?$_GET['units']:NULL;
+	$description = (isset($_GET['description']))?strtolower(trim($_GET['description'])):NULL;
 	$match = true;
 
 	if (!empty($name) && strpos(strtolower($dataref['name']),$name)===false) $match = false;
