@@ -25,7 +25,7 @@ parse();
     <title>X-Plane - Dataref Search</title>
     
     <link rel="stylesheet" href="dataref-search.css" type="text/css" />
-    <script type="text/javascript" src="jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.zclip.min.js"></script>
 	<script type="text/javascript" src="dataref-search.js"></script>
 </head>
