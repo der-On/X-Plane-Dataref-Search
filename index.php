@@ -33,7 +33,7 @@ parse();
     <div id="page">
         <div id="header">
             <h1>X-Plane - Dataref Search</h1>
-            <h2 id="datarefs-version"><?php print $version; ?></h3>
+            <h2 id="datarefs-version"><?php print $version; ?></h2>
 			<ol class="howto">
 				<li>Type in your search criteria and click "Search".</li>
 				<li>Click on the dataref name you want to copy.</li>

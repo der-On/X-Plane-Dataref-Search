@@ -89,4 +89,3 @@ function checkMatch(&$dataref)
 	if (!empty($description) && strpos(strtolower($dataref['description']),$description)===false) $match = false;
 	return $match;
 }
-?>

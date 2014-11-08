@@ -15,7 +15,6 @@ function getName()
 	$('input[name="copy"]').each(function(i,el){
 		if (el.checked) {
 			name = $(el).val();
-			return;
 		}
 	});
 	return name;
