@@ -1,12 +1,12 @@
 <?php
 global $datarefs;
-$datarefs = array();
+$datarefs = [];
 global $types;
-$types = array('');
+$types = [''];
 global $writables;
-$writables = array('');
+$writables = [''];
 global $units;
-$units = array('');
+$units = [''];
 global $version;
 
 global $time;
@@ -43,7 +43,7 @@ function parseLine($line)
 			} else $parts[$i] = trim($parts[$i]);
 		}
 		
-		$dataref = array('name'=>$parts[0],'type'=>$parts[1],'writable'=>$parts[2],'units'=>$parts[3],'description'=>utf8_decode($parts[4]));
+		$dataref = ['name'=>$parts[0],'type'=>$parts[1],'writable'=>$parts[2],'units'=>$parts[3],'description'=>utf8_decode($parts[4])];
 
 		if (checkMatch($dataref)) {
 			if (!in_array($dataref['type'],$types,false)) $types[] = $dataref['type'];
