@@ -25,7 +25,7 @@ parse();
     <title>X-Plane - Dataref Search</title>
     
     <link rel="stylesheet" href="dataref-search.css" type="text/css" />
-    <script type="text/javascript" src="jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.zclip.min.js"></script>
 	<script type="text/javascript" src="dataref-search.js"></script>
 </head>
@@ -33,7 +33,7 @@ parse();
     <div id="page">
         <div id="header">
             <h1>X-Plane - Dataref Search</h1>
-            <h2 id="datarefs-version"><?php print $version; ?></h3>
+            <h2 id="datarefs-version"><?php print $version; ?></h2>
 			<ol class="howto">
 				<li>Type in your search criteria and click "Search".</li>
 				<li>Click on the dataref name you want to copy.</li>
