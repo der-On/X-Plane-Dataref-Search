@@ -20,7 +20,7 @@ function parse()
 	$t_start = microtime(true);
 	$txt = file_get_contents('DataRefs.txt');
 	$lines = explode("\n",$txt);
-	$v = explode(" ",$lines[0]);
+	$v = preg_split("/\s+/",$lines[0]);
 	$version = 'Datarefs for X-Plane '.$v[1].', compiled '.$v[2].' '.$v[3].' '.$v[4].' '.$v[5].' '.$v[6];
 	for($i=1; $i<count($lines);$i++) {
 		parseLine($lines[$i]);
@@ -42,7 +42,7 @@ function parseLine($line)
 				$parts[] = '';
 			} else $parts[$i] = trim($parts[$i]);
 		}
-		
+
 		$dataref = array('name'=>$parts[0],'type'=>$parts[1],'writable'=>$parts[2],'units'=>$parts[3],'description'=>utf8_decode($parts[4]));
 
 		if (checkMatch($dataref)) {
@@ -51,7 +51,7 @@ function parseLine($line)
 			if (!in_array($dataref['units'],$units,false)) $units[] = $dataref['units'];
 			$datarefs[] = $dataref;
 		}
-		
+
 	}
 }
 function fillSelect($arr,$current = '')
