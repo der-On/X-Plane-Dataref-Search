@@ -1,0 +1,10 @@
+.app-search {
+  width: 98%;
+  margin: 0 auto;
+}
+
+.app-dataref-table {
+  table-layout: fixed;
+  width: 98%;
+  margin: 1rem auto;
+}
