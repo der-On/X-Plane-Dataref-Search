@@ -11,6 +11,9 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+.app-dataref-table tr:nth-child(even) {
+  background-color: #f6f6f6;
+}
 
 .app-dataref-table__description-cell {
   white-space: normal;
