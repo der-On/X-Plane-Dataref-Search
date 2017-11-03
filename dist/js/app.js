@@ -17516,6 +17516,10 @@ var _header = require('./header');
 
 var _header2 = _interopRequireDefault(_header);
 
+var _menu = require('./menu');
+
+var _menu2 = _interopRequireDefault(_menu);
+
 var _search = require('./search');
 
 var _search2 = _interopRequireDefault(_search);
@@ -17523,6 +17527,10 @@ var _search2 = _interopRequireDefault(_search);
 var _datarefTable = require('./datarefTable');
 
 var _datarefTable2 = _interopRequireDefault(_datarefTable);
+
+var _datarefTree = require('./datarefTree');
+
+var _datarefTree2 = _interopRequireDefault(_datarefTree);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17541,10 +17549,13 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.handleSearchChange = (0, _lodash.debounce)(_this.handleSearchChange.bind(_this), 300);
+    _this.handleTableView = _this.handleTableView.bind(_this);
+    _this.handleTreeView = _this.handleTreeView.bind(_this);
 
     _this.state = {
       search: '',
       loading: true,
+      viewMode: 'table',
       datarefs: {
         version: null,
         compiledAt: null,
@@ -17587,13 +17598,46 @@ var App = function (_Component) {
       });
     }
   }, {
+    key: 'handleTableView',
+    value: function handleTableView() {
+      this.setState({
+        viewMode: 'table'
+      });
+    }
+  }, {
+    key: 'handleTreeView',
+    value: function handleTreeView() {
+      this.setState({
+        viewMode: 'tree'
+      });
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      if (this.loaderRef) {
+        componentHandler.upgradeElement(this.loaderRef);
+      }
+      if (this.mainRef) {
+        componentHandler.upgradeElement(this.mainRef);
+        componentHandler.upgradeElement(this.mainRef.querySelector('.mdl-js-textfield'));
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return (0, _preact.h)('main', {
-        className: 'app mdl-layout'
-      }, [(0, _header2.default)(this), (0, _search2.default)(this), this.state.loading ? (0, _preact.h)('div', {
+        ref: function ref(_ref) {
+          _this2.mainRef = _ref || _this2.mainRef;
+        },
+        className: 'app mdl-layout mdl-js-layout'
+      }, [(0, _header2.default)(this), (0, _menu2.default)(this), (0, _search2.default)(this), this.state.loading && (0, _preact.h)('div', {
+        ref: function ref(_ref2) {
+          _this2.loaderRef = _ref2 || _this2.loaderRef;
+        },
         className: 'app-loading mdl-progress mdl-js-progress mdl-progress__indeterminate'
-      }, '') : null, (0, _datarefTable2.default)(this)]);
+      }, ''), this.state.viewMode === 'table' && (0, _datarefTable2.default)(this), this.state.viewMode === 'tree' && (0, _datarefTree2.default)(this)]);
     }
   }]);
 
@@ -17602,7 +17646,7 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"../lib/parseDatarefs":9,"./datarefTable":4,"./header":5,"./search":7,"lodash":1,"preact":2}],4:[function(require,module,exports){
+},{"../lib/parseDatarefs":11,"./datarefTable":4,"./datarefTree":5,"./header":6,"./menu":8,"./search":9,"lodash":1,"preact":2}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17627,15 +17671,15 @@ function datarefTableRow(dataref) {
   return (0, _preact.h)('tr', {
     key: dataref.name
   }, [(0, _preact.h)('td', {
-    className: 'mdl-data-table__cell--non-numeric'
+    className: 'app-dataref-table__name-cell mdl-data-table__cell--non-numeric'
   }, dataref.name), (0, _preact.h)('td', {
-    className: 'mdl-data-table__cell--non-numeric'
+    className: 'app-dataref-table__type-cell mdl-data-table__cell--non-numeric'
   }, dataref.type), (0, _preact.h)('td', {
-    className: 'mdl-data-table__cell--non-numeric'
+    className: 'app-dataref-table__unit-cell mdl-data-table__cell--non-numeric'
   }, dataref.unit), (0, _preact.h)('td', {
-    className: 'mdl-data-table__cell--non-numeric'
+    className: 'app-dataref-table__writable-cell mdl-data-table__cell--non-numeric'
   }, dataref.writable), (0, _preact.h)('td', {
-    className: 'mdl-data-table__cell--non-numeric'
+    className: 'app-dataref-table__description-cell mdl-data-table__cell--non-numeric'
   }, dataref.description)]);
 }
 
@@ -17660,7 +17704,39 @@ function datarefTable(app) {
 
 exports.default = datarefTable;
 
-},{"../lib/datarefMatchesSearch":8,"../lib/searchToRegExp":10,"lodash":1,"preact":2}],5:[function(require,module,exports){
+},{"../lib/datarefMatchesSearch":10,"../lib/searchToRegExp":12,"lodash":1,"preact":2}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _preact = require('preact');
+
+var _lodash = require('lodash');
+
+var _searchToRegExp = require('../lib/searchToRegExp');
+
+var _searchToRegExp2 = _interopRequireDefault(_searchToRegExp);
+
+var _datarefMatchesSearch = require('../lib/datarefMatchesSearch');
+
+var _datarefMatchesSearch2 = _interopRequireDefault(_datarefMatchesSearch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function datarefTree(app) {
+  var searchPattern = (0, _searchToRegExp2.default)(app.state.search);
+  var datarefFilter = (0, _lodash.partial)(_datarefMatchesSearch2.default, searchPattern);
+
+  return (0, _preact.h)('ul', {
+    className: 'app-dataref-tree mdl-shadow--2dp'
+  }, []);
+}
+
+exports.default = datarefTree;
+
+},{"../lib/datarefMatchesSearch":10,"../lib/searchToRegExp":12,"lodash":1,"preact":2}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17676,12 +17752,14 @@ function header(app) {
     className: 'mdl-layout__header-row'
   }, [(0, _preact.h)('span', {
     className: 'mdl-layout-title'
-  }, 'X-Pane Dataref Search')]));
+  }, 'X-Plane Dataref Search'), (0, _preact.h)('div', {
+    className: 'mdl-layout-spacer'
+  }), (0, _preact.h)('div', {}, ['v', app.state.datarefs.version || '?', ' | ', app.state.datarefs.compiledAt || '?'])]));
 }
 
 exports.default = header;
 
-},{"preact":2}],6:[function(require,module,exports){
+},{"preact":2}],7:[function(require,module,exports){
 'use strict';
 
 var _preact = require('preact');
@@ -17694,7 +17772,43 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _preact.render)((0, _preact.h)(_App2.default), document.body);
 
-},{"./App":3,"preact":2}],7:[function(require,module,exports){
+},{"./App":3,"preact":2}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _preact = require('preact');
+
+function checkedIcon() {
+  return (0, _preact.h)('i', { className: 'material-icons' }, 'radio_button_checked');
+}
+function uncheckedIcon() {
+  return (0, _preact.h)('i', { className: 'material-icons' }, 'radio_button_unchecked');
+}
+
+function menu(app) {
+  return (0, _preact.h)('div', {
+    className: 'app-menu mdl-layout__drawer'
+  }, [(0, _preact.h)('span', {
+    className: 'mdl-layout-title'
+  }, 'View mode'), (0, _preact.h)('nav', {
+    className: 'mdl-navigation'
+  }, [(0, _preact.h)('a', {
+    className: 'mdl-navigation__link' + (app.state.viewMode === 'table' ? ' is-active' : ''),
+    href: 'javascript:;',
+    onClick: app.handleTableView
+  }, [app.state.viewMode === 'table' ? checkedIcon() : uncheckedIcon(), ' ', 'Table']), (0, _preact.h)('a', {
+    className: 'mdl-navigation__link' + (app.state.viewMode === 'tree' ? ' is-active' : ''),
+    href: 'javascript:;',
+    onClick: app.handleTreeView
+  }, [app.state.viewMode === 'tree' ? checkedIcon() : uncheckedIcon(), ' ', 'Tree'])])]);
+}
+
+exports.default = menu;
+
+},{"preact":2}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17708,7 +17822,7 @@ function search(app) {
     className: 'app-search',
     action: 'javascript:;'
   }, [(0, _preact.h)('div', {
-    className: 'mdl-textfield mdl-js-textfield'
+    className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label'
   }, [(0, _preact.h)('input', {
     className: 'mdl-textfield__input',
     type: 'text',
@@ -17723,7 +17837,7 @@ function search(app) {
 
 exports.default = search;
 
-},{"preact":2}],8:[function(require,module,exports){
+},{"preact":2}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17735,7 +17849,7 @@ function datarefMatchesSearch(search, dataref) {
 
 exports.default = datarefMatchesSearch;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17748,7 +17862,7 @@ function parseDatarefs(datarefs) {
   datarefs = datarefs.trim();
   var firstLine = datarefs.split('\n', 2)[0].split(/\s+/);
   var version = (0, _lodash.get)(firstLine, 1, null);
-  var compiledAt = firstLine.slice(1, 6).join('.');
+  var compiledAt = firstLine.slice(2, 6).join(' ');
   datarefs = datarefs.split('\n').slice(2).map(parseLine).filter((0, _lodash.negate)(_lodash.isNil));
 
   return {
@@ -17767,30 +17881,37 @@ function parseLine(line) {
     return null;
   }
 
-  var parts = line.split(/\s+/, 5).map(_lodash.trim);
+  var parts = line.split(/\s+/).map(_lodash.trim);
 
   return {
     name: (0, _lodash.get)(parts, 0, null),
     type: (0, _lodash.get)(parts, 1, null),
     writable: (0, _lodash.get)(parts, 2, null),
     unit: (0, _lodash.get)(parts, 3, null),
-    description: (0, _lodash.get)(parts, 4, null)
+    description: parts.slice(4).join(' ')
   };
 }
 
 exports.default = parseDatarefs;
 
-},{"lodash":1}],10:[function(require,module,exports){
+},{"lodash":1}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var replacements = [['\\/', '\\/'], ['\\[', '\\['], ['\\]', '\\]'], ['\\$', '\\$'], ['\\^', '\\^'], ['\\(', '\\('], ['\\)', '\\)'], ['\\?', '\\?'], ['\\+', '\\+'], ['\\.', '\\.'], ['\\{', '\\{'], ['\\}', '\\}'], ['\\,', '\\,'], ['\\!', '\\!'], ['\\=', '\\='], ['\\|', '\\|'], ['\\*', '(.*)']];
+
 function searchToRegExp(search) {
-  // TODO: escape all meta characters
-  return new RegExp(search.trim().toLowerCase().replace(/\//g, '\/').replace(/\*/g, '(.*)'));
+  search = search.trim().toLowerCase();
+
+  replacements.forEach(function (replacement) {
+    search = search.replace(new RegExp(replacement[0], 'g'), replacement[1]);
+  });
+
+  return new RegExp(search);
 }
 
 exports.default = searchToRegExp;
 
-},{}]},{},[6]);
+},{}]},{},[7]);

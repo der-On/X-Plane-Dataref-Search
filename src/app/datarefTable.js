@@ -10,19 +10,19 @@ function datarefTableRow(dataref) {
     key: dataref.name
   }, [
     h('td', {
-      className: 'mdl-data-table__cell--non-numeric'
+      className: 'app-dataref-table__name-cell mdl-data-table__cell--non-numeric'
     }, dataref.name),
     h('td', {
-      className: 'mdl-data-table__cell--non-numeric'
+      className: 'app-dataref-table__type-cell mdl-data-table__cell--non-numeric'
     }, dataref.type),
     h('td', {
-      className: 'mdl-data-table__cell--non-numeric'
+      className: 'app-dataref-table__unit-cell mdl-data-table__cell--non-numeric'
     }, dataref.unit),
     h('td', {
-      className: 'mdl-data-table__cell--non-numeric'
+      className: 'app-dataref-table__writable-cell mdl-data-table__cell--non-numeric'
     }, dataref.writable),
     h('td', {
-      className: 'mdl-data-table__cell--non-numeric'
+      className: 'app-dataref-table__description-cell mdl-data-table__cell--non-numeric'
     }, dataref.description)
   ]);
 }

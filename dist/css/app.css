@@ -1,10 +1,17 @@
-.app-search {
-  width: 98%;
-  margin: 0 auto;
+.app-search,
+.app-loading,
+.app-dataref-table {
+  margin-left: auto;
+  margin-right: auto;
+  width: calc(100% - 2rem);
 }
 
 .app-dataref-table {
   table-layout: fixed;
-  width: 98%;
-  margin: 1rem auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.app-dataref-table__description-cell {
+  white-space: normal;
 }

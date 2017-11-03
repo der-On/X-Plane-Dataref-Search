@@ -9,7 +9,11 @@ function header(app) {
     }, [
       h('span', {
         className: 'mdl-layout-title'
-      }, 'X-Pane Dataref Search')
+      }, 'X-Plane Dataref Search'),
+      h('div', {
+        className: 'mdl-layout-spacer'
+      }),
+      h('div', {}, ['v', app.state.datarefs.version || '?', ' | ', app.state.datarefs.compiledAt || '?'])
     ])
   );
 }

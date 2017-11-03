@@ -6,7 +6,7 @@ function search(app) {
     action: 'javascript:;'
   }, [
     h('div', {
-      className: 'mdl-textfield mdl-js-textfield'
+      className: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label'
     }, [
       h('input', {
         className: 'mdl-textfield__input',

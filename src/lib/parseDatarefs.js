@@ -11,7 +11,7 @@ function parseDatarefs(datarefs) {
   datarefs = datarefs.trim();
   const firstLine = datarefs.split('\n', 2)[0].split(/\s+/);
   const version = get(firstLine, 1, null);
-  const compiledAt = firstLine.slice(1, 6).join('.');
+  const compiledAt = firstLine.slice(2, 6).join(' ');
   datarefs = datarefs
   .split('\n')
   .slice(2)
@@ -34,14 +34,14 @@ function parseLine(line) {
     return null;
   }
 
-  const parts = line.split(/\s+/, 5).map(trim);
+  const parts = line.split(/\s+/).map(trim);
 
   return {
     name: get(parts, 0, null),
     type: get(parts, 1, null),
     writable: get(parts, 2, null),
     unit: get(parts, 3, null),
-    description: get(parts, 4, null)
+    description: parts.slice(4).join(' ')
   };
 }
 
